@@ -1,5 +1,7 @@
 <?php namespace Aamant\Mangopay;
 
+require_once dirname(__FILE__) . '/../../MangoPaySDK/mangoPayApi.inc';
+
 use Illuminate\Support\ServiceProvider;
 
 class MangopayServiceProvider extends ServiceProvider {
@@ -12,13 +14,20 @@ class MangopayServiceProvider extends ServiceProvider {
 	protected $defer = false;
 
 	/**
-	 * Register the service provider.
+	 * Bootstrap the application events.
 	 *
 	 * @return void
 	 */
+	public function boot()
+	{
+		$this->package('aamant/mangopay');
+	}
+
 	public function register()
 	{
-		//
+		$this->app['mangopay'] = $this->app->share(function($app){
+			return new MangoPayApi();
+		});
 	}
 
 	/**
@@ -28,7 +37,7 @@ class MangopayServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array();
+		return array('mangopay');
 	}
 
 }
