@@ -550,6 +550,8 @@ class Errors
 				return "The maximum number of attempts is reached";
 			case "02624":
 				return "Card expired";
+			case "02625":
+				return "Invalid cart number format";
 
 			// 3Dsecure error codes
 			case "03001":
