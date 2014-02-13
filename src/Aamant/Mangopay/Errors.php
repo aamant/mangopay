@@ -554,6 +554,8 @@ class Errors
 				return "Invalid cart number format";
 			case "02626":
 				return "Date format invalid";
+			case "02627":
+				return "Cryptogramme invalide";
 
 			// 3Dsecure error codes
 			case "03001":
