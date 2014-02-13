@@ -552,6 +552,8 @@ class Errors
 				return "Card expired";
 			case "02625":
 				return "Invalid cart number format";
+			case "02626":
+				return "Date format invalid";
 
 			// 3Dsecure error codes
 			case "03001":

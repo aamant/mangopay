@@ -252,6 +252,7 @@ return array(
  	"Client certificate is disabled" => "Erreur",
  	"You do not have permissions to make this API call" => "Erreur",
  	"Invalid cart number format" => "Format du numéro de carte invalide",
+ 	"Date format invalid" => "Format de date invalide",
  	"error" => "Erreur",
  	"errors" => "Erreurs",
 );
