@@ -21,6 +21,7 @@ class MangoPayApi extends MangoPayApiBase
 		$this->Config->ClientId = \Config::get('mangopay::auth.client_id');
 		$this->Config->ClientPassword = \Config::get('mangopay::auth.client_password');
 		$this->Config->TemporaryFolder = \Config::get('mangopay::auth.temp_folder');
+		$this->Config->DebugMode = \Config::get('mangopay::auth.debug');
 
 		return $this;
 	}
