@@ -5,14 +5,14 @@ namespace MangoPay;
  * Class to management MangoPay API for users
  */
 class ApiUsers extends ApiBase {
-    
+
     /**
      * Createa new user
      * @param UserLegal/UserNatural $user
      * @return UserLegal/UserNatural User object returned from API
      */
     public function Create($user) {
-        
+
         $className = get_class($user);
         if ($className == 'MangoPay\UserNatural')
             $methodKey = 'users_createnaturals';
@@ -20,11 +20,11 @@ class ApiUsers extends ApiBase {
             $methodKey = 'users_createlegals';
         else
             throw new Exception('Wrong entity class for user');
-        
+
         $response = $this->CreateObject($methodKey, $user);
         return $this->GetUserResponse($response);
     }
-    
+
     /**
      * Get all users
      * @param \MangoPay\Pagination $pagination Pagination object
@@ -32,7 +32,7 @@ class ApiUsers extends ApiBase {
      */
     public function GetAll(& $pagination = null) {
         $usersList = $this->GetList('users_all', $pagination);
-        
+
         $users = array();
         if (is_array($usersList)) {
             foreach ($usersList as $user) {
@@ -41,47 +41,47 @@ class ApiUsers extends ApiBase {
         }
         return $users;
     }
-    
+
     /**
      * Get natural or legal user by ID
      * @param Int/GUID $userId User identifier
      * @return UserLegal/UserNatural User object returned from API
      */
     public function Get($userId) {
-        
+
         $response = $this->GetObject('users_get', $userId);
         return $this->GetUserResponse($response);
     }
-    
+
     /**
      * Get natural user by ID
      * @param Int/GUID $userId User identifier
      * @return UserLegal/UserNatural User object returned from API
      */
     public function GetNatural($userId) {
-        
+
         $response = $this->GetObject('users_getnaturals', $userId);
         return $this->GetUserResponse($response);
     }
-    
+
     /**
      * Get legal user by ID
      * @param Int/GUID $userId User identifier
      * @return UserLegal/UserNatural User object returned from API
      */
     public function GetLegal($userId) {
-        
+
         $response = $this->GetObject('users_getlegals', $userId);
         return $this->GetUserResponse($response);
     }
-    
+
     /**
      * Save user
      * @param UserLegal/UserNatural $user
      * @return UserLegal/UserNatural User object returned from API
      */
     public function Update($user) {
-        
+
         $className = get_class($user);
         if ($className == 'MangoPay\UserNatural')
             $methodKey = 'users_savenaturals';
@@ -89,11 +89,11 @@ class ApiUsers extends ApiBase {
             $methodKey = 'users_savelegals';
         else
             throw new Exception('Wrong entity class for user');
-        
+
         $response = $this->SaveObject($methodKey, $user);
-        return $this->GetUserResponse($response);        
+        return $this->GetUserResponse($response);
     }
-    
+
     /**
      * Create bank account for user
      * @param int $userId User Id
@@ -104,17 +104,17 @@ class ApiUsers extends ApiBase {
         $type = $this->GetBankAccountType($bankAccount);
         return $this->CreateObject('users_createbankaccounts_' . $type, $bankAccount, '\MangoPay\BankAccount', $userId);
     }
-    
+
     /**
      * Get all bank accounts for user
      * @param int $userId User Id
      * @param \MangoPay\Pagination $pagination Pagination object
      * @return array Array with bank account entities
-     */    
+     */
     public function GetBankAccounts($userId, & $pagination = null) {
         return $this->GetList('users_allbankaccount', $pagination, 'MangoPay\BankAccount', $userId);
     }
-    
+
     /**
      * Get bank account for user
      * @param int $userId User Id
@@ -124,7 +124,7 @@ class ApiUsers extends ApiBase {
     public function GetBankAccount($userId, $bankAccountId) {
         return $this->GetObject('users_getbankaccount', $userId, 'MangoPay\BankAccount', $bankAccountId);
     }
-    
+
     /**
      * Get all wallets for user
      * @param int $userId User Id
@@ -133,7 +133,7 @@ class ApiUsers extends ApiBase {
     public function GetWallets($userId, & $pagination = null) {
         return $this->GetList('users_allwallets', $pagination, 'MangoPay\Wallet', $userId);
     }
-        
+
     /**
      * Get all transactions for user
      * @param int $userId User Id
@@ -144,7 +144,7 @@ class ApiUsers extends ApiBase {
     public function GetTransactions($userId, & $pagination = null, $filter = null) {
         return $this->GetList('users_alltransactions', $pagination, '\MangoPay\Transaction', $userId, $filter);
     }
-    
+
     /**
      * Get all cards for user
      * @param int $userId User Id
@@ -153,7 +153,7 @@ class ApiUsers extends ApiBase {
     public function GetCards($userId, & $pagination = null) {
         return $this->GetList('users_allcards', $pagination, '\MangoPay\Card', $userId);
     }
-    
+
     /**
      * Create new KYC document
      * @param int $userId User Id
@@ -163,7 +163,7 @@ class ApiUsers extends ApiBase {
     public function CreateKycDocument($userId, $kycDocument) {
         return $this->CreateObject('kyc_documents_create', $kycDocument, '\MangoPay\KycDocument', $userId);
     }
-    
+
     /**
      * Get KYC document
      * @param int $userId User Id
@@ -173,7 +173,7 @@ class ApiUsers extends ApiBase {
     public function GetKycDocument($userId, $kycDocumentId) {
         return $this->GetObject('kyc_documents_get', $userId, '\MangoPay\KycDocument', $kycDocumentId);
     }
-    
+
     /**
      * Save KYC document
      * @param int $userId User Id
@@ -183,14 +183,14 @@ class ApiUsers extends ApiBase {
     public function UpdateKycDocument($userId, $kycDocument) {
         return $this->SaveObject('kyc_documents_save', $kycDocument, '\MangoPay\KycDocument', $userId);
     }
-    
+
     /**
      * Create page for Kyc document
      * @param int $userId User Id
      * @param \MangoPay\KycPage $page Kyc
      */
     public function CreateKycPage($userId, $kycDocumentId, $kycPage) {
-        
+
         try{
             $this->CreateObject('kyc_page_create', $kycPage, null, $userId, $kycDocumentId);
         } catch (\MangoPay\ResponseException $exc) {
@@ -198,44 +198,44 @@ class ApiUsers extends ApiBase {
                 throw $exc;
         }
     }
-    
+
     /**
      * Create page for Kyc document from file
      * @param int $userId User Id
      * @param \MangoPay\KycPage $page Kyc
      */
     public function CreateKycPageFromFile($userId, $kycDocumentId, $file) {
-        
+
         $filePath = $file;
         if (is_array($file)) {
             $filePath = $file['tmp_name'];
         }
-        
+
         if (empty($filePath))
             throw new \MangoPay\Exception('Path of file cannot be empty');
-        
+
         if (!file_exists($filePath))
             throw new \MangoPay\Exception('File not exist');
-        
+
         $kycPage = new \MangoPay\KycPage();
         $kycPage->File = base64_encode(file_get_contents($filePath));
-        
+
         if (empty($kycPage->File))
             throw new \MangoPay\Exception('Content of the file cannot be empty');
-        
+
         $this->CreateKycPage($userId, $kycDocumentId, $kycPage);
     }
-    
+
     /**
      * Get correct user object
      * @param object $response Response from API
      * @return UserLegal/UserNatural User object returned from API
-     * @throws \MangoPay\Exception If occur unexpected response from API 
+     * @throws \MangoPay\Exception If occur unexpected response from API
      */
     private function GetUserResponse($response) {
-        
+
         if (isset($response->PersonType)) {
-            
+
             switch ($response->PersonType) {
                 case PersonType::Natural:
                     return $this->CastResponseToEntity($response, '\MangoPay\UserNatural');
@@ -243,17 +243,16 @@ class ApiUsers extends ApiBase {
                     return $this->CastResponseToEntity($response, '\MangoPay\UserLegal');
                 default:
                     throw new Exception('Unexpected response. Wrong PersonType value');
-            }            
+            }
         } else {
             throw new Exception('Unexpected response. Missing PersonType property');
         }
     }
-    
+
     private function GetBankAccountType($bankAccount) {
-        
         if (!isset($bankAccount->Details) || !is_object($bankAccount->Details))
             throw new Exception ('Details is not defined or it is not object type');
-        
+
         $className = str_replace('MangoPay\\BankAccountDetails', '', get_class($bankAccount->Details));
         return strtolower($className);
     }
