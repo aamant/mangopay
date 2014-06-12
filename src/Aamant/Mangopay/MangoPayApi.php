@@ -23,6 +23,9 @@ class MangoPayApi extends MangoPayApiBase
 		$this->Config->TemporaryFolder = \Config::get('mangopay::auth.temp_folder');
 		$this->Config->DebugMode = \Config::get('mangopay::auth.debug');
 
+		if (false === \Config::get('mangopay::auth.sandbox')){
+			$this->Config->BaseUrl = "https://api.mangopay.com/v2/";
+		}
 		return $this;
 	}
 
